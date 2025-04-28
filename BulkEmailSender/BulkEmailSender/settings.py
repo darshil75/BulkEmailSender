@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mailer',
     'ckeditor',
+    'ckeditor_uploader',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -81,6 +82,127 @@ TEMPLATES = [
         },
     },
 ]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = Path(BASE_DIR, "media")
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "removePlugins": "stylesheetparser",
+        "allowedContent": True,
+        # 'extraAllowedContent': '*(*)',
+        "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
+        "toolbar_YourCustomToolbarConfig": [
+            {
+                "name": "document",
+                "items": [
+                    "Source",
+                    "-",
+                    "Save",
+                    "NewPage",
+                    "Preview",
+                    "Print",
+                    "-",
+                    "Templates",
+                ],
+            },
+            {
+                "name": "clipboard",
+                "items": [
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    "PasteFromWord",
+                    "-",
+                    "Undo",
+                    "Redo",
+                ],
+            },
+            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
+            {
+                "name": "forms",
+                "items": [
+                    "Form",
+                    "Checkbox",
+                    "Radio",
+                    "TextField",
+                    "Textarea",
+                    "Select",
+                    "Button",
+                    "ImageButton",
+                    "HiddenField",
+                ],
+            },
+            "/",
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "Strike",
+                    "Subscript",
+                    "Superscript",
+                    "-",
+                    "RemoveFormat",
+                ],
+            },
+            {
+                "name": "paragraph",
+                "items": [
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "Blockquote",
+                    "CreateDiv",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                    "-",
+                    "BidiLtr",
+                    "BidiRtl",
+                    "Language",
+                ],
+            },
+            {"name": "links", "items": ["Link", "Unlink", "Anchor"]},
+            {
+                "name": "insert",
+                "items": [
+                    "Image",
+                    "Flash",
+                    "Table",
+                    "HorizontalRule",
+                    "Smiley",
+                    "SpecialChar",
+                    "PageBreak",
+                    "Iframe",
+                ],
+            },
+            "/",
+            {"name": "styles", "items": ["Styles", "Format", "Font", "FontSize"]},
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            {"name": "tools", "items": ["Maximize", "ShowBlocks"]},
+            {"name": "about", "items": ["About"]},
+        ],
+        "toolbar": "YourCustomToolbarConfig",  # put selected toolbar config here
+        "height": 400,
+        "width": "100%",
+        "toolbarCanCollapse": True,
+        "tabSpaces": 4,
+        "extraPlugins": ",".join(
+            [
+                "uploadimage",  # the upload image feature
+            ]
+        ),
+    }
+}
 
 WSGI_APPLICATION = 'BulkEmailSender.wsgi.application'
 

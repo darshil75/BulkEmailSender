@@ -166,20 +166,51 @@
   </div>
 
   <script>
-    // Live Template Preview
-    document.getElementById('templateSelect').addEventListener('change', function () {
-      const selectedOption = this.options[this.selectedIndex];
-      const selectedContent = selectedOption.getAttribute('data-content');
-      const preview = document.getElementById('previewContent');
-      const previewBox = document.getElementById('previewBox');
+    const subjectInput = document.getElementById('subject');
+    const messageInput = document.getElementById('message');
+    const templateSelect = document.getElementById('templateSelect');
+    const previewContent = document.getElementById('previewContent');
+    const previewBox = document.getElementById('previewBox');
 
-      if (selectedContent) {
-        preview.innerHTML = selectedContent;   // Show real template HTML
-        previewBox.style.display = 'block';
-      } else {
+    let selectedTemplate = '';
+
+    function updatePreview() {
+      if (!selectedTemplate) {
         previewBox.style.display = 'none';
+        return;
       }
+
+      // Inject template only once
+      if (!previewContent.dataset.loaded) {
+        previewContent.innerHTML = selectedTemplate;
+        previewContent.dataset.loaded = "true";
+      }
+
+      const subjectSpan = previewContent.querySelector('#email-subject');
+      const messageSpan = previewContent.querySelector('#email-message');
+
+      if (subjectSpan) {
+        subjectSpan.textContent = subjectInput.value || '(No Subject)';
+      }
+
+      if (messageSpan) {
+        messageSpan.textContent = messageInput.value || '(No Message)';
+      }
+
+      previewBox.style.display = 'block';
+    }
+
+    // When user selects a template
+    templateSelect.addEventListener('change', function () {
+      const selectedOption = this.options[this.selectedIndex];
+      selectedTemplate = selectedOption.getAttribute('data-content') || '';
+      previewContent.dataset.loaded = ""; // Reset loaded
+      updatePreview();
     });
+
+    // When user types subject or message
+    subjectInput.addEventListener('input', updatePreview);
+    messageInput.addEventListener('input', updatePreview);
 
     // Disable button after submit
     document.getElementById('emailForm').addEventListener('submit', function () {
@@ -188,6 +219,8 @@
       sendButton.innerHTML = "Sending... ⏳";
     });
   </script>
+
+  
 
 </body>
 </html>
